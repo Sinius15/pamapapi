@@ -46,7 +46,10 @@ public class PrisonLoader {
 				if(line == null)
 					continue;
 				if(line.startsWith("BEGIN")){
-					//System.out.println(line);
+					if(line.endsWith("END"))
+						out.addDataBlock(createSinglelineDataBlock(lines, i));
+					else
+						out.addDataBlock(createMultilineDataBlock(lines, i));
 				}else if(line.startsWith(" ") || line.startsWith("END")){
 					continue;
 				}else{
@@ -62,6 +65,55 @@ public class PrisonLoader {
 			return out;
 		}
 		
+	}
+	/**
+	 * @author Sinius15
+	 * @param fileIn
+	 * @param lineNumberBEGIN = the line where the DataBlock starts
+	 * @return the <b>DataBlock</b> that started on the line given
+	 */
+	private static DataBlock createMultilineDataBlock(String[] fileIn, int lineNumberBEGIN){
+		String beginLine = fileIn[lineNumberBEGIN];
+		DataBlock out = new DataBlock(beginLine.split(" ")[1]);
+		int level = 1;
+		int i = lineNumberBEGIN;
+		while(true){
+			String line = fileIn[i];
+			line.trim();
+			if(line.startsWith("END"))
+				level--;
+			if(line.startsWith("BEGIN"))
+			if(level == 0)
+				break;
+			i++;
+		}
+		System.out.println(out.name);
+		return out;
+	}
+	
+	/**
+	 * @author Sinius15
+	 * @param fileIn
+	 * @param lineNumberBEGIN = the line where the DataBlock starts
+	 * @return the <b>DataBlock</b> that started on the line given
+	 */
+	private static DataBlock createSinglelineDataBlock(String[] fileIn, int lineNumberBEGIN){
+		String beginLine = fileIn[lineNumberBEGIN];
+		DataBlock out = new DataBlock(beginLine.split(" ")[1]);
+		int level = 1;
+		int i = lineNumberBEGIN;
+		while(true){
+			String line = fileIn[i];
+			line.trim();
+			if(line.startsWith("END"))
+				level--;
+			if(line.startsWith("BEGIN"))
+			if(level == 0)
+				break;
+			i++;
+		}
+		System.out.println(out.name);
+		return out;
 	}
 	
 	/**
