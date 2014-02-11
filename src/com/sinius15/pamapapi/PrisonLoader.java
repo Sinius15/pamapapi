@@ -47,9 +47,9 @@ public class PrisonLoader {
 					continue;
 				if(line.startsWith("BEGIN")){
 					if(line.endsWith("END"))
-						out.addDataBlock(createSinglelineDataBlock(lines, i));
-					else
-						out.addDataBlock(createMultilineDataBlock(lines, i));
+						out.addDataBlock(createSinglelineDataBlock(line));
+					//else
+					//	out.addDataBlock(createMultilineDataBlock(lines, i));
 				}else if(line.startsWith(" ") || line.startsWith("END")){
 					continue;
 				}else{
@@ -79,10 +79,13 @@ public class PrisonLoader {
 		int i = lineNumberBEGIN;
 		while(true){
 			String line = fileIn[i];
+			if(line == null)
+				continue;
 			line.trim();
 			if(line.startsWith("END"))
 				level--;
 			if(line.startsWith("BEGIN"))
+				level++;
 			if(level == 0)
 				break;
 			i++;
@@ -92,27 +95,24 @@ public class PrisonLoader {
 	}
 	
 	/**
+	 * 
 	 * @author Sinius15
 	 * @param fileIn
 	 * @param lineNumberBEGIN = the line where the DataBlock starts
 	 * @return the <b>DataBlock</b> that started on the line given
 	 */
-	private static DataBlock createSinglelineDataBlock(String[] fileIn, int lineNumberBEGIN){
-		String beginLine = fileIn[lineNumberBEGIN];
-		DataBlock out = new DataBlock(beginLine.split(" ")[1]);
-		int level = 1;
-		int i = lineNumberBEGIN;
-		while(true){
-			String line = fileIn[i];
-			line.trim();
-			if(line.startsWith("END"))
-				level--;
-			if(line.startsWith("BEGIN"))
-			if(level == 0)
-				break;
-			i++;
+	private static DataBlock createSinglelineDataBlock(String line){
+		String builder = line;
+		builder.trim();
+		line = line.replaceAll("\\s+", " ");
+		String[] split = line.split(" ");
+		DataBlock out = new DataBlock(split[1]);
+		System.out.println("creating single line datablock with name " + out.name);
+		for(int i = 2; i<split.length; i+=2){
+			if(split[i].equals("END"))
+				continue;
+			out.addEntry(new Entry(split[i], split[i+1]));
 		}
-		System.out.println(out.name);
 		return out;
 	}
 	
@@ -145,3 +145,31 @@ public class PrisonLoader {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
