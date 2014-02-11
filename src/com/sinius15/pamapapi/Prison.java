@@ -1,59 +1,49 @@
 package com.sinius15.pamapapi;
 
 import java.io.File;
-import java.util.ArrayList;
 
-public class Prison {
+public class Prison extends DataBlock{
 
 	public String prisonName;
 	public File sourceFile;
-	public ArrayList<DataBlock> dataBlocks = new ArrayList<>();
-	public ArrayList<Entry> entrys = new ArrayList<>();
 	
-	public Entry getEntryByName(String name){
-		for(Entry out : this.entrys)
-			if(out.name.equals(name))
-				return out;
-		return null;
+	public Prison(String name) {
+		super(name);
+		this.prisonName = name;
 	}
-	public DataBlock getDataBlockByName(String name){
-		for(DataBlock out : this.dataBlocks)
-			if(out.name.equals(name))
-				return out;
-		return null;
-	}
-	public void addDataBlock(DataBlock block){
-		this.dataBlocks.add(block);
-	}
-	public void addEntry(Entry entry){
-		this.entrys.add(entry);
-	}
-	public void addEntry(String name, String value){
-		this.entrys.add(new Entry(name, value));
-	}
-	
+
 	public String toString(){
 		String o = "Prison[(name='')(sourceFile='')(dataBlocksAmount='')(entryAmount='')"+System.lineSeparator();
 		o += "DataTree:" + System.lineSeparator();
 		for(Entry e : entrys){
 			o += "|-'" + e.name + "':'" + e.value + ";" + System.lineSeparator();
 		}
+		for(DataBlock e : dataBlocks){
+			o += "" + e.name + System.lineSeparator();
+			o += DataBlockToString(1, e);
+		}
 		
 		return o;
 	}
 	
-	public String DataBlockToString(int level){
+	private String DataBlockToString(int level, DataBlock f){
 		String o = "";
-		for(Entry e : entrys){
-			o += "|-"
+		for(Entry e : f.entrys)
+			o += "|" + getLevelString(level) + "-" + e + System.lineSeparator();
+		for(DataBlock e : f.dataBlocks){
+			o += "|" + getLevelString(level) + "" + e.name + System.lineSeparator();
+			o += DataBlockToString(level+1, e);
 		}
+			
+		return o;
 	}
 	
-	public String getLevelString(int level){
+	private String getLevelString(int level){
 		String o = "";
 		for(int i = 0; i<level; i++){
-			
+			o+= "-|";
 		}
+		return o;
 	}
 	
 }

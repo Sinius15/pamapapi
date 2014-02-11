@@ -17,15 +17,16 @@ public class PrisonLoader {
 			throw new FileNotFoundException("[sqrerror] File Not Found: "+file.getAbsolutePath());
 		synchronized (syncLock) {
 			
-			Prison out = new Prison();
+			Prison out = new Prison(file.getName().replace(".prison", ""));
+			out.sourceFile = file;
+			
 			BufferedReader br;
 			int numberOfLines;
 			String[] lines, split;
 			String line;
 			int i;
 			
-			out.sourceFile = file;
-			out.prisonName = file.getName().replace(".prison", "");
+			
 			
 			System.out.println("Reading file...");
 			numberOfLines = countLines(file);
@@ -73,11 +74,13 @@ public class PrisonLoader {
 	 */
 	private static Pair<DataBlock, Integer> createMultilineDataBlock(String[] fileIn, int lineNumberBEGIN){
 		//finding the name of the current block;
-		String beginLine = fileIn[lineNumberBEGIN];
-		String name = beginLine.split(" ")[1];
+		String beginLine = fileIn[lineNumberBEGIN].trim();
+		String[] split = beginLine.split(" ");
+		String name = split[1];
 		if(name.startsWith("\""))
-			name = beginLine.split(" ")[1] + beginLine.split(" ")[2];
+			name = split[1]+ " " + split[2];
 		DataBlock out = new DataBlock(name);
+		
 		//filling the current block with data
 		int i = lineNumberBEGIN+1;
 		while(!fileIn[i].startsWith("END")){
@@ -94,7 +97,7 @@ public class PrisonLoader {
 				else{
 					Pair<DataBlock, Integer> t = createMultilineDataBlock(fileIn, i);
 					out.addDataBlock(t.a);
-					i+=t.b-1;
+					i+=t.b;
 				}
 					
 			}else if(line.startsWith("END")){
@@ -103,12 +106,12 @@ public class PrisonLoader {
 				if(!line.contains(" "))
 					continue;
 				line = line.replaceAll("\\s+", " ");
-				String[] split = line.split(" ");
+				split = line.split(" ");
 				out.addEntry(split[0], split[1]);
 				i++;
 			}
 		}
-		return new Pair<DataBlock, Integer>(out, i-lineNumberBEGIN-1);
+		return new Pair<DataBlock, Integer>(out, i-lineNumberBEGIN+1);
 	}
 	
 	/**
