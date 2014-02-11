@@ -18,17 +18,30 @@ public class PrisonLoader {
 		synchronized (syncLock) {
 			
 			Prison out = new Prison();
+			BufferedReader br;
+			int numberOfLines;
+			String[] lines;
+			String line;
+			int i;
+			
+			
+			
 			out.sourceFile = file;
 			out.prisonName = file.getName().replace(".prison", "");
 			
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			System.out.println(countLines(file));
-			String line;
+			System.out.println("reading file...");
+			numberOfLines = countLines(file);
+			System.out.println("Number of Lines in the file: " + numberOfLines);
+			lines = new String[numberOfLines+1];
+			
+			br = new BufferedReader(new FileReader(file));
+			i = 0;
 			while ((line = br.readLine()) != null) {
-				
+				lines[i] = line;
+				i++;
 			}
 			br.close();
-			
+			System.out.println("reading done! ");
 			
 			
 			
@@ -37,7 +50,14 @@ public class PrisonLoader {
 		
 	}
 	
-	public static int countLines(File file) throws IOException {
+	/**
+	 * 
+	 * @author http://stackoverflow.com/questions/453018/number-of-lines-in-a-file-in-java
+	 * @param file
+	 * @return the amount of lines in a file
+	 * @throws IOException
+	 */
+	private static int countLines(File file) throws IOException {
 	    InputStream is = new BufferedInputStream(new FileInputStream(file));
 	    try {
 	        byte[] c = new byte[1024];
@@ -52,7 +72,7 @@ public class PrisonLoader {
 	                }
 	            }
 	        }
-	        return (count == 0 && !empty) ? 1 : count+1;
+	        return (count == 0 && !empty) ? 1 : count;
 	    } finally {
 	        is.close();
 	    }
