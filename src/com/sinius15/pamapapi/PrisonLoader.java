@@ -20,16 +20,14 @@ public class PrisonLoader {
 			Prison out = new Prison();
 			BufferedReader br;
 			int numberOfLines;
-			String[] lines;
+			String[] lines, split;
 			String line;
 			int i;
-			
-			
 			
 			out.sourceFile = file;
 			out.prisonName = file.getName().replace(".prison", "");
 			
-			System.out.println("reading file...");
+			System.out.println("Reading file...");
 			numberOfLines = countLines(file);
 			System.out.println("Number of Lines in the file: " + numberOfLines);
 			lines = new String[numberOfLines+1];
@@ -41,9 +39,25 @@ public class PrisonLoader {
 				i++;
 			}
 			br.close();
-			System.out.println("reading done! ");
-			
-			
+			System.out.println("Reading done! ");
+			System.out.println("Prosessing data...");
+			for(i = 0; i < lines.length ; i++){
+				line = lines[i];
+				if(line == null)
+					continue;
+				if(line.startsWith("BEGIN")){
+					//System.out.println(line);
+				}else if(line.startsWith(" ") || line.startsWith("END")){
+					continue;
+				}else{
+					if(!line.contains(" "))
+						continue;
+					line = line.replaceAll("\\s+", " ");
+					split = line.split(" ");
+					out.addEntry(split[0], split[1]);
+					
+				}
+			}
 			
 			return out;
 		}

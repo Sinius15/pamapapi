@@ -10,4 +10,14 @@ public class Prison {
 	public ArrayList<DataBlock> dataBlocks = new ArrayList<>();
 	public ArrayList<Entry> entrys = new ArrayList<>();
 	
+	public void addDataBlock(DataBlock block){
+		this.dataBlocks.add(block);
+	}
+	public void addEntry(Entry entry){
+		this.entrys.add(entry);
+	}
+	public void addEntry(String name, String value){
+		this.entrys.add(new Entry(name, value));
+	}
+	
 }
