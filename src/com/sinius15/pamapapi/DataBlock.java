@@ -31,8 +31,12 @@ public class DataBlock {
 		return null;
 	}
 
-public void addEntry(String name, String value) {
+	public void addEntry(String name, String value) {
 		this.addEntry(new Entry(name, value));
+	}
+	
+	public String toString(){
+		return "DataBlock([name='"+name+"']";
 	}
 	
 }

@@ -10,7 +10,8 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		Prison p = PrisonLoader.loadPrison(new File("C:\\Users\\Sijmen\\Desktop\\test.prison"));
-		System.in.read();
+		System.out.println(p);
+		
 	}
 	
 }
