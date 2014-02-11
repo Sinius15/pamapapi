@@ -53,9 +53,26 @@ public class DataBlock {
 	public void addEntry(String name, String value) {
 		this.addEntry(new Entry(name, value));
 	}
-	
 	public String toString(){
-		return "DataBlock([name='"+name+"'])";
+		return "DataBlock([name='"+name+"'])" + System.lineSeparator() + "DataTree:" + System.lineSeparator() + toString(1, this);
+	}
+	public static String toString(int level, DataBlock f){
+		String o = "";
+		for(Entry e : f.entrys)
+			o += "|" + getLevelString(level) + "-" + e + System.lineSeparator();
+		for(DataBlock e : f.dataBlocks){
+			o += "|" + getLevelString(level) + "" + e.name + System.lineSeparator();
+			o += toString(level+1, e);
+		}
+			
+		return o;
 	}
 	
+	private static String getLevelString(int level){
+		String o = "";
+		for(int i = 0; i<level; i++){
+			o+= "-|";
+		}
+		return o;
+	}
 }

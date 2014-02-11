@@ -20,30 +20,12 @@ public class Prison extends DataBlock{
 		}
 		for(DataBlock e : dataBlocks){
 			o += "" + e.name + System.lineSeparator();
-			o += DataBlockToString(1, e);
+			o += toString(1, e);
 		}
 		
 		return o;
 	}
 	
-	private String DataBlockToString(int level, DataBlock f){
-		String o = "";
-		for(Entry e : f.entrys)
-			o += "|" + getLevelString(level) + "-" + e + System.lineSeparator();
-		for(DataBlock e : f.dataBlocks){
-			o += "|" + getLevelString(level) + "" + e.name + System.lineSeparator();
-			o += DataBlockToString(level+1, e);
-		}
-			
-		return o;
-	}
-	
-	private String getLevelString(int level){
-		String o = "";
-		for(int i = 0; i<level; i++){
-			o+= "-|";
-		}
-		return o;
-	}
+
 	
 }
