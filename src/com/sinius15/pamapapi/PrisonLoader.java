@@ -111,7 +111,10 @@ public class PrisonLoader {
 		for(int i = 2; i<split.length; i+=2){
 			if(split[i].equals("END"))
 				continue;
-			out.addEntry(new Entry(split[i], split[i+1]));
+			if(split[i].startsWith("\""))
+				out.addEntry(new Entry(split[i].replaceAll("\"", "")+split[i+1].replaceAll("\"", ""), split[i+2]));
+			else
+				out.addEntry(new Entry(split[i], split[i+1]));
 		}
 		return out;
 	}
