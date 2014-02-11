@@ -48,8 +48,8 @@ public class PrisonLoader {
 				if(line.startsWith("BEGIN")){
 					if(line.endsWith("END"))
 						out.addDataBlock(createSinglelineDataBlock(line));
-					//else
-					//	out.addDataBlock(createMultilineDataBlock(lines, i));
+					else
+						out.addDataBlock(createMultilineDataBlock(lines, i));
 				}else if(line.startsWith(" ") || line.startsWith("END")){
 					continue;
 				}else{
@@ -58,10 +58,9 @@ public class PrisonLoader {
 					line = line.replaceAll("\\s+", " ");
 					split = line.split(" ");
 					out.addEntry(split[0], split[1]);
-					
 				}
 			}
-			
+			System.out.println("Prosession data done!");
 			return out;
 		}
 		
@@ -73,24 +72,37 @@ public class PrisonLoader {
 	 * @return the <b>DataBlock</b> that started on the line given
 	 */
 	private static DataBlock createMultilineDataBlock(String[] fileIn, int lineNumberBEGIN){
+		
+		//finding the name of the current block;
 		String beginLine = fileIn[lineNumberBEGIN];
-		DataBlock out = new DataBlock(beginLine.split(" ")[1]);
-		int level = 1;
-		int i = lineNumberBEGIN;
-		while(true){
+		String name = beginLine.split(" ")[1];
+		if(name.startsWith("\""))
+			name = beginLine.split(" ")[1] + beginLine.split(" ")[2];
+		DataBlock out = new DataBlock(name);
+		//filling the current block with data
+		int i = lineNumberBEGIN+1;
+		while(!fileIn[i].startsWith("END")){
 			String line = fileIn[i];
 			if(line == null)
 				continue;
-			line.trim();
-			if(line.startsWith("END"))
-				level--;
-			if(line.startsWith("BEGIN"))
-				level++;
-			if(level == 0)
+			
+			line = line.trim();
+			if(line.startsWith("BEGIN")){
+				if(line.endsWith("END"))
+					out.addDataBlock(createSinglelineDataBlock(line));
+				else
+					out.addDataBlock(createMultilineDataBlock(fileIn, i));
+			}else if(line.startsWith("END")){
 				break;
+			}else{
+				if(!line.contains(" "))
+					continue;
+				line = line.replaceAll("\\s+", " ");
+				String[] split = line.split(" ");
+				out.addEntry(split[0], split[1]);
+			}
 			i++;
 		}
-		System.out.println(out.name);
 		return out;
 	}
 	
@@ -102,19 +114,23 @@ public class PrisonLoader {
 	 * @return the <b>DataBlock</b> that started on the line given
 	 */
 	private static DataBlock createSinglelineDataBlock(String line){
+		int i = 2;
 		String builder = line;
 		builder.trim();
 		line = line.replaceAll("\\s+", " ");
 		String[] split = line.split(" ");
-		DataBlock out = new DataBlock(split[1]);
-		System.out.println("creating single line datablock with name " + out.name);
-		for(int i = 2; i<split.length; i+=2){
+		String name = split[1];
+		if(name.startsWith("\"")){
+			name = split[1].replaceAll("\"", "") + " " +split[2].replaceAll("\"", "");
+			i++;
+		}
+		
+		DataBlock out = new DataBlock(name);
+		
+		for(; i<split.length; i+=2){
 			if(split[i].equals("END"))
 				continue;
-			if(split[i].startsWith("\""))
-				out.addEntry(new Entry(split[i].replaceAll("\"", "")+split[i+1].replaceAll("\"", ""), split[i+2]));
-			else
-				out.addEntry(new Entry(split[i], split[i+1]));
+			out.addEntry(new Entry(split[i], split[i+1]));
 		}
 		return out;
 	}

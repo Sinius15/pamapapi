@@ -7,7 +7,6 @@ public class Entry {
 	public Entry(String name, String value){
 		this.name = name;
 		this.value = value;
-		System.out.println("new entry made: " + this.toString());
 	}
 	
 	public String toString(){

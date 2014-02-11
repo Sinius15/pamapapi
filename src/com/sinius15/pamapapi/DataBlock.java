@@ -30,5 +30,9 @@ public class DataBlock {
 				return out;
 		return null;
 	}
+
+public void addEntry(String name, String value) {
+		this.addEntry(new Entry(name, value));
+	}
 	
 }
