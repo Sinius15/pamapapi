@@ -11,6 +11,34 @@ public class Prison extends DataBlock{
 		super(name);
 		this.prisonName = name;
 	}
+	
+	/**
+	 * Seporator: ..
+	 * @param path to the value
+	 * @return the value found in the path
+	 */
+	public String getValue(String path){
+		if(!path.contains("..")){
+			Entry temp = getEntryByName(path);
+			if(temp == null)
+				return null;
+			else
+				return temp.value;
+		}
+			
+		String[] split = path.split("\\.\\.");
+
+		DataBlock block = getDataBlockByName(split[0]);
+		if(block == null)
+			return null;
+		for(int i = 1; i<(split.length-1) ; i++){
+			block = block.getDataBlockByName(split[i]);
+			if(block == null)
+				return null;
+		}
+		
+		return block.getEntryByName(split[split.length-1]).value;
+	}
 
 	public String toString(){
 		String o = "Prison[(name='')(sourceFile='')(dataBlocksAmount='')(entryAmount='')"+System.lineSeparator();
