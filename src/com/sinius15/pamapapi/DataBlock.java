@@ -1,7 +1,11 @@
 package com.sinius15.pamapapi;
 
 import java.util.ArrayList;
-
+/**
+ * @website http://www.sinius15.com
+ * @author Sinius15
+ * @source http://github.com/Sinius15/pamapapi
+ */
 public class DataBlock {
 
 	public String name;
@@ -27,6 +31,13 @@ public class DataBlock {
 		return null;
 	}
 	
+	public Entry getEntryByValue(String val){
+		for(Entry out : this.entrys)
+			if(out.value.equals(name))
+				return out;
+		return null;
+	}
+	
 	public DataBlock getDataBlockByName(String name){
 		for(DataBlock out : this.dataBlocks)
 			if(out.name.equals(name))
@@ -38,6 +49,13 @@ public class DataBlock {
 		ArrayList<Entry> out = new ArrayList<>();
 		for(Entry e : this.entrys)
 			if(e.name.equals(name))
+				out.add(e);
+		return out;
+	}
+	public ArrayList<Entry> getEntrysByValue(String val){
+		ArrayList<Entry> out = new ArrayList<>();
+		for(Entry e : this.entrys)
+			if(e.value.equals(val))
 				out.add(e);
 		return out;
 	}

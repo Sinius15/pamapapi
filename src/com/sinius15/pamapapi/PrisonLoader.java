@@ -9,6 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @website http://www.sinius15.com
+ * @author Sinius15
+ * @source http://github.com/Sinius15/pamapapi
+ */
 public class PrisonLoader {
 	private static String syncLock = "teamMathB";
 	
@@ -26,11 +31,7 @@ public class PrisonLoader {
 			String line;
 			int i;
 			
-			
-			
-			System.out.println("Reading file...");
 			numberOfLines = countLines(file);
-			System.out.println("Number of Lines in the file: " + numberOfLines);
 			lines = new String[numberOfLines+1];
 			
 			br = new BufferedReader(new FileReader(file));
@@ -40,8 +41,6 @@ public class PrisonLoader {
 				i++;
 			}
 			br.close();
-			System.out.println("Reading done! ");
-			System.out.println("Prosessing data...");
 			for(i = 0; i < lines.length ; i++){
 				line = lines[i];
 				if(line == null)
@@ -61,7 +60,6 @@ public class PrisonLoader {
 					out.addEntry(split[0], split[1]);
 				}
 			}
-			System.out.println("Prosession data done!");
 			return out;
 		}
 		

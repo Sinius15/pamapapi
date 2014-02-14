@@ -1,7 +1,11 @@
 package com.sinius15.pamapapi;
 
 import java.io.File;
-
+/**
+ * @website http://www.sinius15.com
+ * @author Sinius15
+ * @source http://github.com/Sinius15/pamapapi
+ */
 public class Prison extends DataBlock{
 
 	public String prisonName;

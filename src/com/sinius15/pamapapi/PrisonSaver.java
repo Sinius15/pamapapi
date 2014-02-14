@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
+/**
+ * @website http://www.sinius15.com
+ * @author Sinius15
+ * @source http://github.com/Sinius15/pamapapi
+ */
 public class PrisonSaver {
 
 	private static String syncLock = "teamMathA";

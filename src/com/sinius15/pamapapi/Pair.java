@@ -1,5 +1,11 @@
 package com.sinius15.pamapapi;
 
+/**
+ * @website http://www.sinius15.com
+ * @author Sinius15
+ * @source http://github.com/Sinius15/pamapapi
+ */
+
 public class Pair<K, V> {
 
 	K a;
