@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class PrisonLoader {
-	private static String syncLock = "teamMath";
+	private static String syncLock = "teamMathB";
 	
 	public static Prison loadPrison(File file) throws IOException{
 		if(!file.exists())
@@ -129,7 +129,7 @@ public class PrisonLoader {
 		String[] split = line.split(" ");
 		String name = split[1];
 		if(name.startsWith("\"")){
-			name = split[1].replaceAll("\"", "") + " " +split[2].replaceAll("\"", "");
+			name = split[1] + " " +split[2];
 			i++;
 		}
 		
@@ -150,7 +150,7 @@ public class PrisonLoader {
 	 * @return the amount of lines in a file
 	 * @throws IOException
 	 */
-	private static int countLines(File file) throws IOException {
+	public static int countLines(File file) throws IOException {
 	    InputStream is = new BufferedInputStream(new FileInputStream(file));
 	    try {
 	        byte[] c = new byte[1024];
