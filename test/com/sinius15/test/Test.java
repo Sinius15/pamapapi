@@ -1,4 +1,4 @@
-package com.sinius15.pamapapi.test;
+package com.sinius15.test;
 
 import java.io.File;
 import java.io.IOException;
