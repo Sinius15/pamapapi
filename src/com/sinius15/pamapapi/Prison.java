@@ -12,7 +12,7 @@ public class Prison extends DataBlock{
 	public File sourceFile;
 	
 	public Prison(String name) {
-		super(name);
+		super(name, "root");
 		this.prisonName = name;
 	}
 	
@@ -42,6 +42,33 @@ public class Prison extends DataBlock{
 		}
 		
 		return block.getEntryByName(split[split.length-1]).value;
+	}
+	
+	/**
+	 * Seporator: ..
+	 * @param path to the value
+	 * @return the datablock found in the path
+	 */
+	public DataBlock getBlock(String path){
+		if(!path.contains("..")){
+			DataBlock temp = getDataBlockByName(path);
+			if(temp == null)
+				return null;
+			else
+				return temp;
+		}
+			
+		String[] split = path.split("\\.\\.");
+
+		DataBlock block = getDataBlockByName(split[0]);
+		if(block == null)
+			return null;
+		for(int i = 1; i<(split.length) ; i++){
+			block = block.getDataBlockByName(split[i]);
+			if(block == null)
+				return null;
+		}
+		return block;
 	}
 
 	public String toString(){

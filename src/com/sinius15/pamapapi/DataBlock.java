@@ -8,12 +8,21 @@ import java.util.ArrayList;
  */
 public class DataBlock {
 
+	public String referencePath = "";
 	public String name;
 	public ArrayList<DataBlock> dataBlocks = new ArrayList<>();
 	public ArrayList<Entry> entrys = new ArrayList<>();
 	
+	@Deprecated
 	public DataBlock(String name){
 		this.name = name;
+	}
+	public DataBlock(String name, String referencePat){
+		this.name = name;
+		this.referencePath = referencePat;
+		if(referencePath.startsWith("..")){
+			referencePath = referencePath.replaceFirst("\\.\\.", "");
+		}
 	}
 	
 	public void addDataBlock(DataBlock block){

@@ -47,9 +47,9 @@ public class PrisonLoader {
 					continue;
 				if(line.startsWith("BEGIN")){
 					if(line.endsWith("END"))
-						out.addDataBlock(createSinglelineDataBlock(line));
+						out.addDataBlock(createSinglelineDataBlock(line, ""));
 					else
-						out.addDataBlock(createMultilineDataBlock(lines, i).a);
+						out.addDataBlock(createMultilineDataBlock(lines, i, "").a);
 				}else if(line.startsWith(" ") || line.startsWith("END")){
 					continue;
 				}else{
@@ -68,16 +68,17 @@ public class PrisonLoader {
 	 * @author Sinius15
 	 * @param fileIn
 	 * @param lineNumberBEGIN = the line where the DataBlock starts
+	 * @param level: the parent level where the datablock is in.
 	 * @return the <b>DataBlock</b> that started on the line given
 	 */
-	private static Pair<DataBlock, Integer> createMultilineDataBlock(String[] fileIn, int lineNumberBEGIN){
+	private static Pair<DataBlock, Integer> createMultilineDataBlock(String[] fileIn, int lineNumberBEGIN, String level){
 		//finding the name of the current block;
 		String beginLine = fileIn[lineNumberBEGIN].trim();
 		String[] split = beginLine.split(" ");
 		String name = split[1];
 		if(name.startsWith("\""))
 			name = split[1]+ " " + split[2];
-		DataBlock out = new DataBlock(name);
+		DataBlock out = new DataBlock(name, level + ".." + name);
 		
 		//filling the current block with data
 		int i = lineNumberBEGIN+1;
@@ -89,11 +90,11 @@ public class PrisonLoader {
 			line = line.trim();
 			if(line.startsWith("BEGIN")){
 				if(line.endsWith("END")){
-					out.addDataBlock(createSinglelineDataBlock(line));
+					out.addDataBlock(createSinglelineDataBlock(line, level + ".." + out.name));
 					i++;
 				}
 				else{
-					Pair<DataBlock, Integer> t = createMultilineDataBlock(fileIn, i);
+					Pair<DataBlock, Integer> t = createMultilineDataBlock(fileIn, i, level + ".." + out.name);
 					out.addDataBlock(t.a);
 					i+=t.b;
 				}
@@ -117,9 +118,10 @@ public class PrisonLoader {
 	 * @author Sinius15
 	 * @param fileIn
 	 * @param lineNumberBEGIN = the line where the DataBlock starts
+	 * @param level: the parent level where the datablock is in.
 	 * @return the <b>DataBlock</b> that started on the line given
 	 */
-	private static DataBlock createSinglelineDataBlock(String line){
+	private static DataBlock createSinglelineDataBlock(String line, String level){
 		int i = 2;
 		String builder = line;
 		builder.trim();
@@ -131,7 +133,7 @@ public class PrisonLoader {
 			i++;
 		}
 		
-		DataBlock out = new DataBlock(name);
+		DataBlock out = new DataBlock(name, level + ".." + name);
 		
 		for(; i<split.length; i+=2){
 			if(split[i].equals("END"))
