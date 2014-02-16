@@ -38,15 +38,17 @@ public class PrisonSaver {
 		
 		b.add("BEGIN "+in.name + "   ");
 		for(Entry e : in.entrys)
-			b.add(spaceString(4) + EntryToSingleLineString(e));
+			b.add(spaceString(4) + EntryToSingleLineString(e) + "  ");
 		for(DataBlock e : in.dataBlocks)
 			if(e.dataBlocks.size() == 0 && e.entrys.size() < 13)
 				b.add(spaceString(4) + DataBlockToSingleLine(e));
 			else
 				b.addAll(DataBlockToMuliBlock(e, level+1));
 		b.add("END");
-		for(int i = 0; i < b.size() ; i++)
+		for(int i = 0; i < b.size() ; i++){
 			b.set(i, spaceString(4*level) + b.get(i));
+		}
+			
 		
 		return b;
 	}
@@ -54,7 +56,7 @@ public class PrisonSaver {
 	 *  BEGIN_name_?_entry__entry__entry__entry__END
 	 */
 	private static String DataBlockToSingleLine(DataBlock in){
-		String b = "BEGIN "+in.name+spaceString(13-in.name.length());
+		String b = "BEGIN "+in.name+spaceString(12-in.name.length()) + " ";
 		for(Entry e : in.entrys)
 			b +=EntryToInlineString(e) + "  ";
 		b+= "END";
@@ -70,7 +72,7 @@ public class PrisonSaver {
 	 *  name_?_value
 	 */
 	private static String EntryToSingleLineString(Entry in){
-		return in.name + spaceString(20-in.name.length()+1) + in.value + "  ";
+		return in.name + spaceString(20-in.name.length()+1) + in.value;
 	}
 	/**
 	 * a string of spaces. amount of spaces is the lenght.

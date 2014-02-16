@@ -16,8 +16,13 @@ import com.sinius15.pamapapi.PrisonSaver;
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		Prison p = PrisonLoader.loadPrison(new File(System.getProperty("user.home") + "\\Desktop\\test17.prison"));
-		PrisonSaver.savePrison(p, new File(System.getProperty("user.home") + "\\Desktop\\test17_new.prison"));
+		Prison p = PrisonLoader.loadPrison(new File(System.getProperty("user.home") + "\\Desktop\\test.prison"));
+		
+		System.out.println(p.getValue("Thermometer..Temperature"));
+		//p.getBlock("Thermometer").getEntryByName("Temperature").value = "12";
+		
+		
+		PrisonSaver.savePrison(p, new File(System.getProperty("user.home") + "\\Desktop\\test_copy.prison"));
 		
 	}
 	
